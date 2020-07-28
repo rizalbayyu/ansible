@@ -48,6 +48,6 @@
   - name: Clone the app repo
     git:
       repo: 'https://github.com/rizalbayyu/fase2.git'
-      dest: /opt/
+      dest: /opt/fase2
       version: master
 ...
