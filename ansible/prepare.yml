@@ -1,6 +1,6 @@
 ---
 - name: Preparing deploy
-  hosts: target
+  hosts: docker
   become: yes
   tasks:
   - name: Install EPEL repository
