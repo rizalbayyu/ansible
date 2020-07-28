@@ -1,0 +1,11 @@
+---
+- name: Deploy Monitoring Service
+  hosts: docker
+  become: yes
+  tasks:
+  - name: Monitoring Service
+    docker_stack:
+      state: present
+      name: monitoring
+      compose:
+        - /opt/fase2/prometheus/docker-stack.yml

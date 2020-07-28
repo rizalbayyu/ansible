@@ -1,0 +1,32 @@
+---
+- name: Deploy Owncloud and Nginx
+  hosts: docker
+  become: yes
+  tasks:
+  - name: Create a owncloud network overlay
+    docker_network:
+      name: owncloud-network
+      driver: overlay
+
+  - name: Create a nginx network overlay
+    docker_network:
+      name: nginx-network
+      driver: overlay
+
+  - name: Deploy Owncloud
+    docker_stack:
+      state: present
+      name: owncloud
+      compose:
+        - /opt/fase2/owncloud-nginx/docker-compose.yml
+
+  - name: Deploy Nginx
+    docker_stack:
+      state: present
+      name: nginx
+      compose:
+        - /opt/fase2/owncloud-nginx/nginx.yml
+
+  - name: Scale Ghost service into three replicas
+    shell: docker service scale owncloud_owncloud=3
+...

@@ -1,0 +1,46 @@
+---
+- name: Install nginx
+  hosts: Webserver
+  become: yes
+  tasks:
+  - name: Install EPEL repository to add nginx repository
+    yum:
+      name: epel-release
+      state: latest
+
+  - name: Install nginx to the latest version
+    yum:
+      name: nginx
+      state: latest
+
+  - name: Delete the nginx.conf default file
+    file:
+      path: /etc/nginx/nginx.conf
+      state: absent
+
+  - name: Copy the new nginx.conf file
+    copy:
+      src: /home/rizal/ansible/nginx/nginx.conf
+      dest: /etc/nginx/nginx.conf
+
+  - name: Copy new config file
+    copy:
+      src: /home/rizal/ansible/nginx/default.conf
+      dest: /etc/nginx/conf.d/default.conf
+
+  - name: Start and enable nginx
+    service:
+      name: nginx
+      state: started
+      enabled: yes
+
+  - name: Open firewall for http access
+    firewalld:
+      service: http
+      permanent: true
+      state: enabled
+
+  - name: Restart the firewalld service to load in the firewall changes
+    service:
+      name: firewalld
+      state: restarted

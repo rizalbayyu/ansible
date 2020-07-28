@@ -1,0 +1,53 @@
+---
+- name: Preparing deploy
+  hosts: target
+  become: yes
+  tasks:
+  - name: Install EPEL repository
+    yum:
+      name: epel-release
+      state: latest
+
+
+  - name: Download the Docker installer
+    get_url:
+      url: https://get.docker.com/
+      dest: /opt/install_docker.sh
+      mode: 0700
+
+  - name: Install Docker
+      shell: /opt/install_docker.sh
+
+  - name: Remove the Docker installer file.
+      file:
+        state: absent
+        path: /root/install_docker.sh
+
+  - name: Enable the Docker daemon in systemd
+      systemd:
+        name: docker
+        enabled: yes
+        masked: no
+
+  - name: Start the Docker daemon
+      systemd:
+        name: docker
+        state: started
+        masked: no
+
+  - name: Download and install Docker Compose
+      get_url:
+        url: https://github.com/docker/compose/releases/download/1.21.2/docker-compose-Linux-x86_64
+        dest: /usr/bin/docker-compose
+        mode: 0755
+
+  - name: Install Git
+    yum:
+      name: git
+      state: latest
+  - name: Clone the app repo
+    git:
+      repo: 'https://github.com/rizalbayyu/fase2.git'
+      dest: /opt/
+      version: master
+...
