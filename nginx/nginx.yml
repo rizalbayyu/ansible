@@ -20,12 +20,12 @@
 
   - name: Copy the new nginx.conf file
     copy:
-      src: /home/rizal/ansible/nginx.conf
+      src: nginx.conf
       dest: /etc/nginx/nginx.conf
 
   - name: Copy new config file
     copy:
-      src: /home/rizal/ansible/default.conf
+      src: default.conf
       dest: /etc/nginx/conf.d/default.conf
 
   - name: Start and enable nginx
