@@ -14,8 +14,8 @@
 
   - name: Upgraade pip
     pip:
-     name: pip
-     extra_args: --upgrade
+      name: pip
+      extra_args: --upgrade
 
   - name: Install Docker module for Python
     pip:
@@ -27,22 +27,46 @@
       name: docker-compose
       state: latest
 
-  - name: Enable the Docker daemon in systemd
-      systemd:
-        name: docker
-        enabled: yes
-        masked: no
+  - name: Install yum utils
+    yum:
+      name: yum-utils
+      state: latest
 
-  - name: Start the Docker daemon
-      systemd:
-        name: docker
-        state: started
-        masked: no
+  - name: Install device-mapper-persistent-data
+    yum:
+      name: device-mapper-persistent-data
+      state: latest
+
+  - name: Install lvm2
+    yum:
+      name: lvm2
+      state: latest
+
+  - name: Add Docker repo
+    get_url:
+      url: https://download.docker.com/linux/centos/docker-ce.repo
+      dest: /etc/yum.repos.d/docker-ce.repo
+    
+  - name: Install Docker itself
+    package:
+      name: docker-ce
+      state: latest
+
+  - name: Start Docker service
+    service:
+      name: docker
+      state: started
+      enabled: yes
+
+  - name: Init a new swarm with defaults parameters
+    docker_swarm:
+      state: present
 
   - name: Install Git
     yum:
       name: git
       state: latest
+      
   - name: Clone the app repo
     git:
       repo: 'https://github.com/rizalbayyu/fase2.git'
