@@ -8,20 +8,24 @@
       name: epel-release
       state: latest
 
+  - name: Install Python pip
+    yum:
+      name: python-pip
 
-  - name: Download the Docker installer
-    get_url:
-      url: https://get.docker.com/
-      dest: /opt/install_docker.sh
-      mode: 0700
+  - name: Upgraade pip
+    pip:
+     name: pip
+     extra_args: --upgrade
 
-  - name: Install Docker
-      shell: /opt/install_docker.sh
+  - name: Install Docker module for Python
+    pip:
+      name: docker
+      state: latest
 
-  - name: Remove the Docker installer file.
-      file:
-        state: absent
-        path: /root/install_docker.sh
+  - name: Install Docker Compose module
+    pip:
+      name: docker-compose
+      state: latest
 
   - name: Enable the Docker daemon in systemd
       systemd:
@@ -35,12 +39,6 @@
         state: started
         masked: no
 
-  - name: Download and install Docker Compose
-      get_url:
-        url: https://github.com/docker/compose/releases/download/1.21.2/docker-compose-Linux-x86_64
-        dest: /usr/bin/docker-compose
-        mode: 0755
-
   - name: Install Git
     yum:
       name: git
@@ -50,4 +48,3 @@
       repo: 'https://github.com/rizalbayyu/fase2.git'
       dest: /opt/fase2
       version: master
-...
