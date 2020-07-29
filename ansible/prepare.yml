@@ -62,6 +62,11 @@
     docker_swarm:
       state: present
 
+  - name: Install jsondiff
+    pip:
+      name: jsondiff
+      state: latest
+
   - name: Install Git
     yum:
       name: git
