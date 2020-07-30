@@ -27,6 +27,6 @@
       compose:
         - /opt/fase2/owncloud-nginx/nginx.yml
 
-  - name: Scale Ghost service into three replicas
+  - name: Scale Owncloud service into three replicas
     shell: docker service scale owncloud_owncloud=3
 ...
