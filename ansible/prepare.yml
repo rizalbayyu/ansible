@@ -12,7 +12,7 @@
     yum:
       name: python-pip
 
-  - name: Upgraade pip
+  - name: Upgrade pip
     pip:
       name: pip
       extra_args: --upgrade
@@ -53,7 +53,7 @@
       state: started
       enabled: yes
 
-  - name: Init a new swarm with defaults parameters
+  - name: Init swarm service
     docker_swarm:
       state: present
 
